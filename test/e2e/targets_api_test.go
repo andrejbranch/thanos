@@ -23,6 +23,8 @@ import (
 )
 
 func TestTargetsAPI_Fanout(t *testing.T) {
+	t.Skip("TODO: Flaky test. See: https://github.com/thanos-io/thanos/issues/4069")
+
 	t.Parallel()
 
 	netName := "e2e_test_targets_fanout"
@@ -105,6 +107,7 @@ func TestTargetsAPI_Fanout(t *testing.T) {
 	})
 }
 
+//nolint:unused
 func targetAndAssert(t *testing.T, ctx context.Context, addr string, state string, want *targetspb.TargetDiscovery) {
 	t.Helper()
 
@@ -127,6 +130,7 @@ func targetAndAssert(t *testing.T, ctx context.Context, addr string, state strin
 		for it := range res.ActiveTargets {
 			res.ActiveTargets[it].LastScrape = time.Time{}
 			res.ActiveTargets[it].LastScrapeDuration = 0
+			res.ActiveTargets[it].GlobalUrl = ""
 		}
 
 		sort.Slice(res.ActiveTargets, func(i, j int) bool { return res.ActiveTargets[i].Compare(res.ActiveTargets[j]) < 0 })
